@@ -1,25 +1,25 @@
-# Practical 2: Live Search and Timer
+# React Hooks Practical Exam Series
 
-A searchable user directory combined with a live session timer, built using React `useState` and `useEffect` hooks[cite: 3].
+A complete suite of six progressive React applications demonstrating proficient selection, implementation, performance optimization, and debugging of core React Hooks.
 
-## Completed Requirements
-- **Delayed Search Filter:** Implemented a search input that filters the local user data (`USERS`) after a short effect delay, simulating an asynchronous search request[cite: 3].
-- **Search Cleanup:** Utilized timeout cleanup (`clearTimeout`) so that fast typing cancels previous pending searches and prevents outdated results from displaying[cite: 3].
-- **Session Timer:** Created a 1-second interval timer to track elapsed session seconds with proper cleanup (`clearInterval`) on unmount[cite: 3].
-- **Document Title Synchronization:** Synchronized `document.title` to dynamically reflect the number of currently visible search results whenever the count changes[cite: 3].
+---
 
-## Known Limitations
-- None. All functional requirements, cleanup behaviors, and synchronization tasks are fully implemented and verified.
+## 📋 Series Overview
 
-## Test Steps
-1. **Live Search & Fast Typing:** Type quickly into the search input box. Verify that the results update smoothly and that outdated queries are properly canceled without flashing stale data[cite: 3].
-2. **Document Title Sync:** Type different queries (e.g., search for "Ana" or "Developer") and observe the browser tab title update to match the exact number of visible results[cite: 3].
-3. **Session Timer:** Watch the session time counter increase once per second, confirming the interval works and cleans up properly[cite: 3].
+| Exam | Application | Primary Hooks | Focus Area |
+|---|---|---|---|
+| **1** | Smart Task Counter | `useState` | Local state, boundary conditions, queued functional updates[cite: 1, 2] |
+| **2** | Live Search and Timer | `useEffect`, `useState` | Async side effects, interval cleanup, document title sync[cite: 1, 3] |
+| **3** | Accessible Form Toolkit | `useRef`, `useState` | Controlled inputs, DOM imperative focusing, ref persistence without re-rendering[cite: 1, 4] |
+| **4** | Application Preferences | `useContext`, `useState` | Global state sharing across nested components without prop drilling[cite: 1, 5] |
+| **5** | Product Explorer Performance Repair | `useMemo`, `useCallback` | Performance optimization, calculation memoization, preventing child re-renders[cite: 1, 6] |
+| **6** | Issue Tracker State Engine | `useReducer` | Complex state transitions via pure immutable reducer functions[cite: 1, 7] |
 
-## Bug Fixed / Debugging Notes
-- *Issue:* A common pitfall during development was an effect depending on the exact state value it updates, or an interval capturing a stale initial seconds value.
-- *Fix:* Used functional state updates (`setSeconds(prev => prev + 1)`) and clean dependency arrays to ensure stable execution and prevent infinite loops.
+---
 
-## Project Execution
-1. Run `npm install` to install dependencies[cite: 1].
-2. Run `npm run dev` to start the local development server[cite: 1].
+## 🛠️ Installation & Setup
+
+1. **Clone the repository:**
+   ```bash
+   git clone <your-repository-url>
+   cd <your-project-folder>
