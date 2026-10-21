@@ -1,78 +1,68 @@
+import React, { useState, useEffect } from 'react';
 
-import { useState } from 'react'
-import './App.css'
+const USERS = [
+  { id: 1, name: 'Ana Cruz', role: 'Developer' },
+  { id: 2, name: 'Ben Lim', role: 'Designer' },
+  { id: 3, name: 'Cara Yu', role: 'Tester' },
+  { id: 4, name: 'Dan Go', role: 'Developer' }
+];
 
-function App() {
-  const [count, setCount] = useState(0)
-  const [target, setTarget] = useState(5)
+export default function App() {
+  const [query, setQuery] = useState('');
+  const [filteredUsers, setFilteredUsers] = useState(USERS);
+  const [seconds, setSeconds] = useState(0);
 
-  const status =
-    count === 0
-      ? 'Not started'
-      : count >= target
-        ? 'Target reached'
-        : 'In progress'
+  // 1-second session timer with cleanup on unmount[cite: 3]
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      setSeconds((prevSeconds) => prevSeconds + 1);
+    }, 1000);
 
-  const addTwo = () => {
-    setCount(current => Math.min(current + 1, target))
-    setCount(current => Math.min(current + 1, target))
-  }
+    return () => clearInterval(timerId);
+  }, []);
+
+  // Delayed search filter with timeout cleanup to cancel outdated requests[cite: 3]
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      const results = USERS.filter((user) =>
+        user.name.toLowerCase().includes(query.toLowerCase()) ||
+        user.role.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredUsers(results);
+    }, 300);
+
+    return () => clearInterval(timeoutId);
+  }, [query]);
+
+  // Synchronize document title with the visible result count[cite: 3]
+  useEffect(() => {
+    document.title = `Visible Results: ${filteredUsers.length}`;
+  }, [filteredUsers]);
 
   return (
-    <main className="container">
-      <h1>Smart Task Counter</h1>
-      <p className="subtitle">Track your study session</p>
+    <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
+      <h2>Live Search and Timer</h2>
+      <p>Session Time: <strong>{seconds}s</strong></p>
 
-      <section className="counter-card">
-        <label htmlFor="target">Task target</label>
-        <input
-          id="target"
-          type="number"
-          min="1"
-          value={target}
-          onChange={event =>
-            setTarget(Math.max(1, Number(event.target.value)))
-          }
-        />
+      <input
+        type="text"
+        placeholder="Search users..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        style={{ padding: '8px', width: '100%', maxWidth: '300px', marginBottom: '15px' }}
+      />
 
-        <p className="status">{status}</p>
-
-        <div className="count">{count}</div>
-        <p>of {target} tasks completed</p>
-
-        <div className="buttons">
-          <button
-            onClick={() =>
-              setCount(current => Math.min(current + 1, target))
-            }
-            disabled={count >= target}
-          >
-            Increment +1
-          </button>
-
-          <button
-            onClick={addTwo}
-            disabled={count >= target}
-          >
-            Add Two +2
-          </button>
-
-          <button
-            onClick={() =>
-              setCount(current => Math.max(0, current - 1))
-            }
-            disabled={count === 0}
-          >
-            Decrement -1
-          </button>
-
-          <button onClick={() => setCount(0)}>
-            Reset
-          </button>
-        </div>
-      </section>
-    </main>
-  )
+      <ul>
+        {filteredUsers.length > 0 ? (
+          filteredUsers.map((user) => (
+            <li key={user.id}>
+              {user.name} - <em>{user.role}</em>
+            </li>
+          ))
+        ) : (
+          <p>No users found.</p>
+        )}
+      </ul>
+    </div>
+  );
 }
-
-export default App
